@@ -10,6 +10,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 export class IconButtonComponent {
     randomIcon: IconProp | null = null;
     allIcons: IconName[];
+    removingTask: ReturnType<typeof setTimeout> | null = null;
 
     constructor() {
         library.add(fas);
@@ -17,6 +18,10 @@ export class IconButtonComponent {
     }
 
     showRandomIcon(): void {
+        if (this.removingTask) {
+            clearTimeout(this.removingTask);
+        }
+
         this.randomIcon = null;
         const randomIndex = Math.floor(Math.random() * this.allIcons.length);
         const iconName = this.allIcons[randomIndex];
@@ -25,7 +30,8 @@ export class IconButtonComponent {
         if (iconDefinition) {
             this.randomIcon = iconDefinition;
         }
-        setTimeout(() => {
+        
+        this.removingTask = setTimeout(() => {
             this.randomIcon = null;
         }, 3000);
     }
